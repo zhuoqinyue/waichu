@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>外出登记二维码</title>
+    <style>
+        body {
+            background-color: rgb(245, 245, 245);
+            padding: 0;
+            margin: 0;
+        }
+
+        #showTime {
+            font-family: "Microsoft YaHei";
+            font-size: 1.10em;
+            background-color: white;
+            text-align: center;
+            min-height: 10%;
+            width: 100%;
+            margin: 0;
+            padding-top: 4%;
+            padding-bottom: 4%;
+        }
+
+        .CODE {
+            margin: 4%;
+            text-align: center;
+            display: block;
+        }
+
+        .Title {
+            color: rgb(136, 136, 136);
+            margin: 2%;
+            font-size: 0.85em;
+        }
+
+        .inRow {
+            background-color: white;
+            margin: 0;
+            padding: 2%;
+            border: 1px solid rgb(248, 248, 248);
+        }
+
+        .timeX {
+            text-align: left;
+        }
+
+        .timeXTime {
+            text-align: left;
+            float: right;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .stuInf {
+            text-align: left;
+            font-size: 0.9em;
+        }
+
+        .stuReal {
+            float: right;
+            font-size: 0.9em;
+            color: rgb(148, 148, 148);
+        }
+
+        .showInf {
+            display: none;
+        }
+
+        .tab {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="tab">
+        <form name='myInf'>
+
+            姓名 <input type="text" id='stuName' value=''><br />
+
+            学号 <input type="text" id='stuID' value=''><br />
+
+        </form>
+
+        <button onclick='show()'>提交</button>
+    </div>
+
+    <div class="showInf">
+        <div id="showTime">
+
+        </div>
+
+        <!-- 二维码 -->
+        <div class="CODE">
+            <img src="./code.jpg" width='35%' height="35%">
+        </div>
+
+
+
+        <div class="Title">
+            外出时间
+        </div>
+        <div class="inRow">
+            <span class="timeX">离校时间</span>
+            <span class="timeXTime" id='realLaeveTime'></span>
+        </div>
+        <div class="inRow">
+            <span class="timeX">回校时间</span>
+            <span class="timeXTime" id='realBackTime'></span>
+        </div><br />
+
+
+        <div class="Title">
+            学生信息
+        </div>
+        <div class="inRow">
+            <span class="stuInf">姓名</span>
+            <span class="stuReal" id='stuRealName'></span>
+        </div>
+        <div class="inRow">
+            <span class="stuInf">学号</span>
+            <span class="stuReal" id='stuRealID'></span>
+        </div>
+        <div class="inRow">
+            <span class="stuInf">学院</span>
+            <span class="stuReal">应用数学学院</span>
+        </div>
+        <div class="inRow">
+            <span class="stuInf">专业</span>
+            <span class="stuReal">信息与计算科学</span>
+        </div>
+        <div class="inRow">
+            <span class="stuInf">班级</span>
+            <span class="stuReal">信息与计算科学18(2)</span>
+        </div>
+
+    </div>
+
+
+    <script>
+
+        window.onpageshow = function () {
+            if (localStorage.getItem('姓名')) {
+                let tab = document.getElementsByClassName('tab')[0]
+                showInf = document.getElementsByClassName('showInf')[0]
+                tab.style.display = 'none'
+                showInf.style.display = 'block'
+
+                document.getElementById('stuRealName').innerText = localStorage.getItem('姓名')
+                document.getElementById('stuRealID').innerText = localStorage.getItem('学号')
+            }
+        }
+        function show() {
+            let stuName = myInf.stuName.value,
+                stuID = myInf.stuID.value
+
+            document.getElementById('stuRealName').innerText = stuName
+            document.getElementById('stuRealID').innerText = stuID
+
+            localStorage.setItem('姓名', stuName);
+            localStorage.setItem('学号', stuID);
+
+            let tab = document.getElementsByClassName('tab')[0],
+                showInf = document.getElementsByClassName('showInf')[0]
+            tab.style.display = 'none'
+            showInf.style.display = 'block'
+
+        }
+
+
+
+        const getTime = function getTime() {
+            let now = new Date()
+            let y = now.getFullYear() + '',
+                m = (now.getMonth() + 1) > 10 ? (now.getMonth() + 1) + '' : '0' + (now.getMonth() + 1),
+                d = chuli(now.getUTCDate()),
+                H = chuli(now.getHours()),
+                M = chuli(now.getMinutes()),
+                S = chuli(now.getSeconds())
+            let result = y + '-' + m + '-' + d + ' ' + H + ':' + M + ':' + S
+            let realLaeveTime = y + '-' + m + '-' + d + ' ' + '06:00'
+            let realBackTime = y + '-' + m + '-' + d + ' ' + '23:59'
+
+            document.getElementById('showTime').innerText = result
+            document.getElementById('realLaeveTime').innerText = realLaeveTime
+            document.getElementById('realBackTime').innerText = realBackTime
+            setTimeout(getTime, 1000)
+        }
+
+        const chuli = function chuli(num) {
+            return num >= 10 ? num + '' : '0' + num
+        }
+        window.addEventListener('load', getTime)
+
+
+    </script>
+</body>
+
+</html>
