@@ -176,7 +176,7 @@
         const getTime = function getTime() {
             let now = new Date()
             let y = now.getFullYear() + '',
-                m = (now.getMonth() + 1) > 10 ? (now.getMonth() + 1) + '' : '0' + (now.getMonth() + 1),
+                m = (now.getMonth() + 1) >= 10 ? (now.getMonth() + 1) + '' : '0' + (now.getMonth() + 1),
                 d = chuli(now.getUTCDate()),
                 H = chuli(now.getHours()),
                 M = chuli(now.getMinutes()),
