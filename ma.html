@@ -172,18 +172,21 @@
         }
 
 
+        const chuli = function chuli(num) {
+            return num >= 10 ? num + '' : '0' + num
+        }
 
         const getTime = function getTime() {
-            let now = new Date()
+            const now = new Date()
             let y = now.getFullYear() + '',
-                m = (now.getMonth() + 1) >= 10 ? (now.getMonth() + 1) + '' : '0' + (now.getMonth() + 1),
+                m = chuli(now.getMonth() + 1),
                 d = chuli(now.getUTCDate()),
                 H = chuli(now.getHours()),
                 M = chuli(now.getMinutes()),
                 S = chuli(now.getSeconds())
-            let result = y + '-' + m + '-' + d + ' ' + H + ':' + M + ':' + S
-            let realLaeveTime = y + '-' + m + '-' + d + ' ' + '06:00'
-            let realBackTime = y + '-' + m + '-' + d + ' ' + '23:59'
+            const result = `${y}-${m}-${d} ${H}:${M}:${S}`
+            const realLaeveTime = `${y}-${m}-${d} 06:00`
+            const realBackTime = `${y}-${m}-${d} 23:59`
 
             document.getElementById('showTime').innerText = result
             document.getElementById('realLaeveTime').innerText = realLaeveTime
@@ -191,9 +194,6 @@
             setTimeout(getTime, 1000)
         }
 
-        const chuli = function chuli(num) {
-            return num >= 10 ? num + '' : '0' + num
-        }
         window.addEventListener('load', getTime)
 
 
